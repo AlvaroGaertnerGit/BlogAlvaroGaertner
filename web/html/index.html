@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alvaro Gaertner | Blog Personal & Portfolio</title>
+    <meta name="description"
+        content="Bienvenido al espacio personal de Alvaro Gaertner. Desarrollo, tecnología y proyectos.">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap"
+        rel="stylesheet">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body>
+    <div class="background-gradient"></div>
+
+    <header class="glass-header">
+        <nav class="container">
+            <a href="#" class="logo">Alvaro<span class="accent"> Gaertner</span></a>
+            <ul class="nav-links">
+                <li><a href="#home" class="active">Inicio</a></li>
+                <li><a href="#blog">Formación</a></li>
+                <li><a href="#about">Sobre Mí</a></li>
+                <li><a href="#contact" class="btn-primary">Contactar</a></li>
+            </ul>
+            <button class="mobile-menu-btn" aria-label="Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section id="home" class="hero">
+            <div class="container hero-content">
+                <span class="badge">Computer Engineering Student @ UFV</span>
+                <h1>Álvaro Gaertner <br><span class="gradient-text">Full Stack developer</span></h1>
+                <p>Estudiante de 4º curso de Ingeniería Informática. Apasionado por el desarrollo web, cloud computing y
+                    la visualización matemática.</p>
+                <div class="hero-actions">
+                    <a href="#blog" class="btn-primary">Ver Formación</a>
+                    <a href="#about" class="btn-secondary">Conóceme</a>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="floating-card card-1">
+                    <div class="icon">🚀</div>
+                    <div class="text">Innovación</div>
+                </div>
+                <div class="floating-card card-2">
+                    <div class="icon">🎨</div>
+                    <div class="text">Creatividad</div>
+                </div>
+                <div class="glow-circle"></div>
+            </div>
+        </section>
+
+        <!-- Certifications/Blog Section -->
+        <section id="blog" class="section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Certificaciones y Formación</h2>
+                    <p>Mi trayectoria académica y logros profesionales recientes.</p>
+                </div>
+                <div class="blog-grid" id="blog-grid">
+                    <!-- Posts will be injected here by JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="section about-section">
+            <div class="container about-grid">
+                <div class="about-image">
+                    <div class="image-placeholder"></div> <!-- Replace with real image later -->
+                </div>
+                <div class="about-content">
+                    <h2>Sobre Mí</h2>
+                    <p>Soy estudiante de 4º año de Ingeniería Informática en la UFV, ansioso por aplicar mis
+                        conocimientos académicos a desafíos del mundo real. Mis principales intereses son el
+                        <strong>desarrollo web</strong>, <strong>cloud computing</strong> y la <strong>visualización
+                            matemática</strong>.
+                    </p>
+                    <p style="margin-top: 1rem; color: var(--text-muted);">Más allá de lo técnico, aporto 4 años de
+                        experiencia en el sector de la hostelería, lo que ha agudizado mis habilidades de resolución de
+                        problemas, trabajo en equipo y atención al detalle.</p>
+                    <ul class="stats">
+                        <li><strong>4º</strong> Curso UFV</li>
+                        <li><strong>4+</strong> Años Exp. Laboral</li>
+                        <li><strong>Cloud</strong> & Web Dev</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="glass-footer">
+        <div class="container footer-content">
+            <div class="footer-brand">
+                <h3>Alvaro<span class="accent"> Gaertner</span></h3>
+                <p>Innovación y tecnología desde Madrid.</p>
+            </div>
+            <div class="footer-links">
+                <a href="https://www.linkedin.com/in/alvarogaertner2262331b1" target="_blank">LinkedIn</a>
+                <a href="https://github.com/AlvaroGaertnerGit">GitHub</a>
+                <a href="mailto:alvarogaertnerufv18@gmail.com">Email</a>
+            </div>
+            <div class="copyright">
+                &copy; 2025 Alvaro Gaertner. Todos los derechos reservados.
+            </div>
+        </div>
+    </footer>
+
+    <script src="../js/script.js"></script>
+</body>
+
+</html>
