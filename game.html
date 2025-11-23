@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neon Ninja | Alvaro Gaertner</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="game.css">
+</head>
+
+<body>
+    <div class="game-ui">
+        <div class="score-board">
+            <span>Score: <span id="score">0</span></span>
+            <span>High Score: <span id="high-score">0</span></span>
+        </div>
+        <a href="index.html" class="back-btn">← Volver</a>
+    </div>
+
+    <div id="game-over-screen" class="hidden">
+        <h1>Game Over</h1>
+        <p>Score Final: <span id="final-score">0</span></p>
+        <button id="restart-btn">Jugar de Nuevo</button>
+        <a href="index.html" class="home-btn">Volver al Inicio</a>
+    </div>
+
+    <div id="start-screen">
+        <h1>Neon Ninja</h1>
+        <p>Arrastra el ratón para cortar las frutas. ¡No cortes las bombas!</p>
+        <button id="start-btn">Comenzar</button>
+    </div>
+
+    <canvas id="game-canvas"></canvas>
+
+    <script src="game.js"></script>
+</body>
+
+</html>

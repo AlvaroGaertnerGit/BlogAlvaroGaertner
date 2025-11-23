@@ -32,7 +32,6 @@ const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
 const navLinks = document.querySelector('.nav-links');
 
 // Render Blog Posts
-// Render Blog Posts
 function renderPosts() {
     if (!blogGrid) return;
     blogGrid.innerHTML = blogPosts.map(post => `
@@ -96,75 +95,161 @@ window.addEventListener('scroll', () => {
     }
 });
 
-// Mouse Trail Effect
-function initMouseTrail() {
-    // Reduced color palette: Google Blue and White/Light Grey
-    const colors = ['#4285F4', '#ffffff', '#e8eaed'];
-
-    let lastX = 0;
-    let lastY = 0;
-
-    document.addEventListener('mousemove', (e) => {
-        // Calculate distance to ensure particles are generated even on fast movement
-        const distance = Math.hypot(e.clientX - lastX, e.clientY - lastY);
-
-        // Generate more particles based on movement speed
-        const particleCount = Math.min(Math.floor(distance / 5) + 1, 5);
-
-        for (let i = 0; i < particleCount; i++) {
-            createParticle(e.clientX, e.clientY, colors);
-        }
-
-        lastX = e.clientX;
-        lastY = e.clientY;
-    });
-}
-
-function createParticle(x, y, colors) {
-    const particle = document.createElement('div');
-    particle.classList.add('particle');
-
-    // Random color from reduced palette
-    const color = colors[Math.floor(Math.random() * colors.length)];
-    particle.style.background = color;
-
-    // Add some random offset so they don't all spawn in the exact same pixel
-    const offsetX = (Math.random() - 0.5) * 10;
-    const offsetY = (Math.random() - 0.5) * 10;
-
-    particle.style.left = `${x + offsetX}px`;
-    particle.style.top = `${y + offsetY}px`;
-
-    // Slightly smaller but more numerous
-    const size = Math.random() * 6 + 2;
-    particle.style.width = `${size}px`;
-    particle.style.height = `${size}px`;
-
-    // Vary opacity for depth
-    particle.style.opacity = Math.random() * 0.5 + 0.5;
-
-    document.body.appendChild(particle);
-
-    // Animate movement - spread out more
-    const destinationX = x + (Math.random() - 0.5) * 100;
-    const destinationY = y + (Math.random() - 0.5) * 100;
-
-    const animation = particle.animate([
-        { transform: `translate(-50%, -50%) scale(1)`, opacity: 1 },
-        { transform: `translate(calc(-50% + ${destinationX - x}px), calc(-50% + ${destinationY - y}px)) scale(0)`, opacity: 0 }
-    ], {
-        duration: 1200, // Longer life
-        easing: 'cubic-bezier(0, .9, .57, 1)',
-        fill: 'forwards'
-    });
-
-    animation.onfinish = () => {
-        particle.remove();
-    };
-}
-
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
     renderPosts();
-    initMouseTrail();
+    initParticleSystem();
 });
+
+// --- Advanced Particle System (Canvas) ---
+// --- Advanced Particle System (Canvas) ---
+function initParticleSystem() {
+    const canvas = document.getElementById('particle-canvas');
+    if (!canvas) return;
+
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+    let width, height;
+
+    // Mouse State
+    const mouse = {
+        x: undefined,
+        y: undefined,
+        radius: 150 // Interaction radius
+    };
+
+    // Resize Handler
+    function resize() {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    // Mouse Events
+    window.addEventListener('mousemove', (e) => {
+        mouse.x = e.x;
+        mouse.y = e.y;
+    });
+
+    window.addEventListener('mouseout', () => {
+        mouse.x = undefined;
+        mouse.y = undefined;
+    });
+
+    // Particle Class
+    class Particle {
+        constructor() {
+            this.x = Math.random() * width;
+            this.y = Math.random() * height;
+            this.vx = (Math.random() - 0.5) * 1; // Velocity X
+            this.vy = (Math.random() - 0.5) * 1; // Velocity Y
+            this.size = Math.random() * 2 + 1;
+            this.baseX = this.x;
+            this.baseY = this.y;
+            this.density = (Math.random() * 30) + 1;
+            // Harmonized Colors: Blue or White
+            this.color = Math.random() > 0.5 ? '#5c9aff' : '#ffffff';
+        }
+
+        draw() {
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fillStyle = this.color;
+            ctx.fill();
+        }
+
+        update() {
+            // Physics: Mouse Interaction
+            if (mouse.x !== undefined && mouse.y !== undefined) {
+                let dx = mouse.x - this.x;
+                let dy = mouse.y - this.y;
+                let distance = Math.sqrt(dx * dx + dy * dy);
+
+                // Force Field Effect
+                if (distance < mouse.radius) {
+                    const forceDirectionX = dx / distance;
+                    const forceDirectionY = dy / distance;
+                    const maxDistance = mouse.radius;
+                    const force = (maxDistance - distance) / maxDistance;
+                    const directionX = forceDirectionX * force * this.density;
+                    const directionY = forceDirectionY * force * this.density;
+
+                    // Repulsion (Game-like interaction)
+                    this.x -= directionX;
+                    this.y -= directionY;
+                } else {
+                    // Return to original speed/position logic if needed, 
+                    // but for "game-like" let's keep them floating freely but influenced
+                    if (this.x !== this.baseX) {
+                        let dx = this.x - this.baseX;
+                        this.x -= dx / 50; // Elastic return
+                    }
+                    if (this.y !== this.baseY) {
+                        let dy = this.y - this.baseY;
+                        this.y -= dy / 50;
+                    }
+                }
+            }
+
+            // Move particle
+            this.x += this.vx;
+            this.y += this.vy;
+
+            // Bounce off edges
+            if (this.x < 0 || this.x > width) this.vx = -this.vx;
+            if (this.y < 0 || this.y > height) this.vy = -this.vy;
+
+            this.draw();
+        }
+    }
+
+    // Initialize Particles
+    function init() {
+        particles = [];
+        // Create many particles for "game feel"
+        const numberOfParticles = (width * height) / 9000;
+        for (let i = 0; i < numberOfParticles; i++) {
+            particles.push(new Particle());
+        }
+    }
+
+    // Animation Loop
+    function animate() {
+        requestAnimationFrame(animate);
+        ctx.clearRect(0, 0, width, height);
+
+        for (let i = 0; i < particles.length; i++) {
+            particles[i].update();
+        }
+
+        // Connect particles (Constellation effect)
+        connect();
+    }
+
+    // Draw lines between close particles
+    function connect() {
+        let opacityValue = 1;
+        for (let a = 0; a < particles.length; a++) {
+            for (let b = a; b < particles.length; b++) {
+                let distance = ((particles[a].x - particles[b].x) * (particles[a].x - particles[b].x))
+                    + ((particles[a].y - particles[b].y) * (particles[a].y - particles[b].y));
+
+                if (distance < (canvas.width / 7) * (canvas.height / 7)) {
+                    opacityValue = 1 - (distance / 20000);
+                    if (opacityValue > 0) {
+                        ctx.strokeStyle = 'rgba(92, 154, 255,' + opacityValue * 0.2 + ')'; // Harmonized Blue lines
+                        ctx.lineWidth = 1;
+                        ctx.beginPath();
+                        ctx.moveTo(particles[a].x, particles[a].y);
+                        ctx.lineTo(particles[b].x, particles[b].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+        }
+    }
+
+    init();
+    animate();
+}
